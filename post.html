@@ -1,0 +1,171 @@
+
+<!DOCTYPE>
+ <html>
+<html lang="en">
+<head>
+	<meta charset = "utf-8"/>
+	<title> Listings </title>
+	<link rel="stylesheet"href="https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css" />
+ <script src='https://cdn.firebase.com/js/client/1.0.17/firebase.js'></script>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js"></script>
+<meta name="viewport" content ="width=device-width, initial-scale=1, maximum-scale=1"/>
+<link rel="stylesheet" type="text/css" href="RideShareTheme.css" />
+
+<script>
+//var infoRefs = [];
+var infoVals = [];
+var url = "https://sulphdme735.firebaseio-demo.com";
+var firebaseRef = new Firebase(url);
+ var phoneNum = "unknown";   
+ //var infoId = infoRefs.length;
+ var myRequestRef = "";
+
+ 
+ //Prompt Phone Number
+ 
+  $(function() {
+ 	phoneNum= prompt("Enter your phone number in order for others to contact you to share a ride")
+ 	console.log (phoneNum);
+ 	}); 
+
+
+    function funct1(position)
+    {	
+          var title = $("#post-title").val();
+          console.log (title);
+        
+   		// var phoneNum = $("#post-content").val();
+   		 //console.log(phoneNum);
+   		 
+        var date = Date();      
+        var object = {title: title, Date: date, phoneNum: phoneNum,
+        			  latitude: position.coords.latitude,
+    				  longitude: position.coords.longitude}
+    	var match = false;			  
+    	for (i =0; i <infoVals.length; i++) {
+    		if (phoneNum === infoVals[i].phoneNum)
+    			{alert ("You have already entered a Ride, delete previous ride to enter 			another one");
+    			match = true;
+    			break;
+    		}
+        }
+        
+       	if (match === false) {
+       	firebaseRef.push(object);
+       	console.log ("Pushing the object");
+        }
+	}
+	
+	firebaseRef.on("child_added", function(snapshot) { 
+    	
+       infoVals.push(snapshot.val());
+    	var info = snapshot.val();
+    	var id = snapshot.name();
+    	// Construct the delete link, will call delFruit function with fruitId.
+    	var delLink = "";
+   if (phoneNum === info.phoneNum) {
+    		
+		
+          //delLink = "<button id='" +id+"'> Remove </button>";
+		//console.log("delLink: " + delLink);
+    //console.log(info)
+    myRequestRef = snapshot.ref();
+    console.log ("Found user request");
+    }
+		
+		// Add new fruit and it's delete link to the list.
+    //DATA IS NOT SANITIZED, VERY VERY VERY BAD
+    	$('#infoDiv').append("<li id='"+id+"'>" + info.Title + ": $ " +  "(" + info.phoneNum + ") " + delLink + "</li>"); 
+    });
+	 $(document).ready(function() {
+      $('#pagetwo').on('click','button', function() {
+          console.log($(this).attr('id'))
+          firebaseRef.child($(this).attr('id')).remove()
+          $("#" + $(this).attr('id')).remove()
+
+      })
+   })
+   
+   
+   
+function delInfo() {
+    	console.log("Deleting Info");
+	if (myRequestRef != "")
+	{
+    	myRequestRef.remove(); //delete from database
+    	myRequestRef = "";
+    }
+    	
+    	
+}
+
+    
+    // Shortcut to call this when page is loaded.
+	
+</script>
+<script>
+var x = document.getElementById("demo");
+
+function getLocation() {
+	navigator.geolocation.getCurrentPosition(showPosition);
+}
+
+function showPosition(position) {
+    funct1(position);
+}
+
+</script>
+
+</head>
+<body>
+
+<p id="demo"> </p>
+
+
+<form>
+
+ 
+
+<div data-role="page" id="pageone">
+  <div data-role="header">
+    <h1>Buttons</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+    <a href="#pagetwo" class="ui-btn">Go to Page Two</a>
+  </div>
+  
+  <div class="post-title">
+            <input id="post-title" type="text" placeholder="Post Destination">
+        </div>
+        <div class="post-content">
+            <textarea id="post-content" type="text" placeholder="Post Number of Seats"></textarea>
+        </div>
+		<button type="submit" class="submit ui-btn" onclick="getLocation()">Submit</button>
+		<button type="submit" class="submit ui-btn" onclick="delInfo()"> Remove</button>
+    
+
+
+</div> 
+
+<div data-role="page" id="pagetwo">
+  <div data-role="header">
+    <h1>Buttons</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+    <p>Goodbye!</p>
+    <a href="#pageone" class="ui-btn">Go to Page One</a>
+  </div>
+  <ol id='infoDiv'</ol> 
+
+</div>
+ 
+<!--<button type="submit" class="submit" onclick="remPost()">Remove</button> -->
+
+		
+</form>
+</body>
+</html>
