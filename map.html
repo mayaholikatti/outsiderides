@@ -1,120 +1,87 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Geolocation</title>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <link href="default.css" rel="stylesheet">
+<head>
+	<title>Geolocation</title>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<meta charset="utf-8">
+	<link href="default.css" rel="stylesheet">
     <!--
     Include the maps javascript with sensor=true because this code is using a
     sensor (a GPS locator) to determine the user's location.
     See: https://developers.google.com/apis/maps/documentation/javascript/basics#SpecifyingSensor
     -->
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
+    	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
 	<script src='https://cdn.firebase.com/js/client/1.0.15/firebase.js'></script>
-    <script>
+	<script>
 		var myDataRef = new Firebase('https://sulphdme735.firebaseio-demo.com');
 	</script>
-    <script>
+    	<script>
     
-var map;
+	var map;
+	
+	function initialize() {
+		var mapOptions = {
+		zoom: 20,
+	    	mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-function initialize() {
-  var mapOptions = {
-    zoom: 16,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  };
-  map = new google.maps.Map(document.getElementById('map-canvas'),
-      mapOptions);
 
-
-myDataRef.on("child_added", function(snapshot){
-	var coordinate = snapshot.val();
-	var contentString = '<div id="content">'+
-      '</div>'+
-      '<h1 id="firstHeading" class="firstHeading">'+coordinate.title + '<br>' + coordinate.numSeats + " " + "seats" +'</h1>'+
-      '</div>'+ '<a href="tel:' +coordinate.phoneNum+'"><button>Click to Call</button></a>';
-    var infowindow = new google.maps.InfoWindow({
-      content: contentString
-  	});
-	var markers = [];
-	var marker = new google.maps.Marker({
-		position: new google.maps.LatLng(coordinate.latitude, coordinate.longitude),
-		map: map,
-		title: 'New Location'
+	myDataRef.on("child_added", function(snapshot){
+		var coordinate = snapshot.val();
+		var contentString = '<div id="content">'+'</div>'+'<h1 id="firstHeading" class="firstHeading">'+coordinate.title + '<br>' + coordinate.numSeats + " " + "seats" +'</h1>'+
+	        '</div>'+ '<a href="tel:' +coordinate.phoneNum+'"><button>Click to Call</button></a>';
+    		var infowindow = new google.maps.InfoWindow({ 
+    			content: contentString
+  		});
+		var markers = [];
+		var marker = new google.maps.Marker({
+			position: new google.maps.LatLng(coordinate.latitude, coordinate.longitude),
+			map: map,
+			title: 'New Location'
+		});
+		google.maps.event.addListener(marker, 'click', function() {
+	    		infowindow.open(map,marker);
+	  	});
 	});
-	google.maps.event.addListener(marker, 'click', function() {
-    infowindow.open(map,marker);
-  });
-});
-
-
- 
-/*var myLatlng = new google.maps.LatLng(37.794527, -122.407861); //Chinatown
-	var mapOptions = {
-    zoom: 4,
-    center: myLatlng
-  }*/
-  /*
-  firebaseRef.on("child_added", function(snapshot) { 
-    	fruitRefs.push(snapshot.ref());
-       
-    	var fruit = snapshot.val();
-    	$('#fruitDiv').append("<li>" + fruit.name + ": $ " + fruit.price + "</li>"); 
-    });
-    */
-  /*var markers = [];
-  var marker = new google.maps.Marker({
-      position: myLatlng,
-      map: map,
-      title: 'Chinatown!'
-  });*/
 
   // Try HTML5 geolocation
-  if(navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      var pos = new google.maps.LatLng(position.coords.latitude,
-                                       position.coords.longitude);
-
-      /*var infowindow = new google.maps.InfoWindow({
-        map: map,
-        position: pos,
-        content: ''
-      });*/
-
-      map.setCenter(pos);
-    }, function() {
-      handleNoGeolocation(true);
-    });
-  } else {
+	if(navigator.geolocation) {
+    		navigator.geolocation.getCurrentPosition(function(position) {
+		var pos = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+		map.setCenter(pos);
+        	}, function() {
+      			handleNoGeolocation(true);
+        	});
+  		} else {
     // Browser doesn't support Geolocation
-    handleNoGeolocation(false);
-  }
-}
+    		handleNoGeolocation(false);
+  		}
+	}
 
-function handleNoGeolocation(errorFlag) {
-  if (errorFlag) {
-    var content = 'Error: The Geolocation service failed.';
-  } else {
-    var content = 'Error: Your browser doesn\'t support geolocation.';
-  }
+	function handleNoGeolocation(errorFlag) {
+  		if (errorFlag) {
+    			var content = 'Error: The Geolocation service failed.';
+  		} else {
+    			var content = 'Error: Your browser doesn\'t support geolocation.';
+		}
 
-  var options = {
-    map: map,
-    position: new google.maps.LatLng(60, 105),
-    content: content
-  };
+  		var options = {
+	    		map: map,
+			position: new google.maps.LatLng(60, 105),
+	    		content: content
+  		};
 
   //var infowindow = new google.maps.InfoWindow(options);
   //smap.setCenter(options.position);
-}
+	}
 
-google.maps.event.addDomListener(window, 'load', initialize);
+	google.maps.event.addDomListener(window, 'load', initialize);
 
-    </script>
+        </script>
   </head>
   <body>
  
-    <div id="map-canvas"></div>
+   <div id="map-canvas"></div>
   </body>
 </html>
