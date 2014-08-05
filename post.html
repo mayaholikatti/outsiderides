@@ -1,3 +1,4 @@
+
 <!DOCTYPE>
  <html>
 <html lang="en">
@@ -10,7 +11,7 @@
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js"></script>
 <meta name="viewport" content ="width=device-width, initial-scale=1, maximum-scale=1"/>
-<link rel="stylesheet" type="text/css" href="main.css" />
+<link rel="stylesheet" type="text/css" href="RideShareTheme.css" />
 
 <script>
 //var infoRefs = [];
@@ -20,14 +21,6 @@ var firebaseRef = new Firebase(url);
  var phoneNum = "unknown";   
  //var infoId = infoRefs.length;
  var myRequestRef = "";
-
- 
- //Prompt Phone Number
- 
-  $(function() {
- 	phoneNum= prompt("Enter your phone number in order for others to contact you to share a ride")
- 	console.log (phoneNum);
- 	}); 
 
 
     function funct1(position)
@@ -110,6 +103,7 @@ function delInfo() {
 var x = document.getElementById("demo");
 
 function getLocation() {
+	phoneNum= prompt("Enter your phone number in order for others to contact you to share");
 	navigator.geolocation.getCurrentPosition(showPosition);
 }
 
