@@ -24,6 +24,10 @@
 	margin-top: 50px;
 	display: block;
 }
+img {
+	display: block;
+	margin: 0 auto;
+}
 html, body {
 	font-size: 100%;
 }
