@@ -3,7 +3,9 @@
  <html>
 <html lang="en">
 <head>
-	<meta http-equiv="refresh" content="1">
+
+
+</script>
 	<meta charset = "utf-8"/>
 	<title> Listings </title>
 	<link rel="stylesheet"href="https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css" />
@@ -13,6 +15,22 @@
 <script src="https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js"></script>
 <meta name="viewport" content ="width=device-width, initial-scale=1, maximum-scale=1"/>
 <link rel="stylesheet" type="text/css" href="main.css" />
+
+<script type='text/javascript'>
+
+(function()
+{
+  if( window.localStorage )
+  {
+    if( !localStorage.getItem( 'firstLoad' ) )
+    {
+      localStorage[ 'firstLoad' ] = true;
+      window.location.reload();
+    }  
+    else
+      localStorage.removeItem( 'firstLoad' );
+  }
+})();
 
 <script>
 //var infoRefs = [];
