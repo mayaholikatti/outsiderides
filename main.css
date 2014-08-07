@@ -22,6 +22,10 @@
 	margin-top:25px;
 	margin-bottom:25px;
 }
+p, br {
+	margin: 0 auto !important;
+	display: block !important;
+}
 #homeBtn {
 	display: block;
 	margin: 0 auto;
