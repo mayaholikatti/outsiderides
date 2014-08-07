@@ -22,6 +22,10 @@
 	margin-top:25px;
 	margin-bottom:25px;
 }
+#homeBtn {
+	display: block;
+	margin: 0 auto;
+}
 #map {
 	height: 300px;
 	width: 300px;
