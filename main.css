@@ -41,8 +41,8 @@ p, br {
 img {
 	display: block;
 	margin: 0 auto;
-	height: 50px;
-	width: 125px;
+	height: 100px;
+	width: 200px;
 }
 html, body {
 	font-size: 100%;
